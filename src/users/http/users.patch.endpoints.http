@@ -1,0 +1,8 @@
+## Get Request For Users Controller
+PATCH http://localhost:3030/users/1013
+Content-Type: application/json
+
+{
+    "email": "john@doe.com",
+    "password": "password@123"
+}

@@ -1,0 +1,4 @@
+## Get Request For Users Controller
+GET http://localhost:3030/users/1013
+?limit=10
+&page=2
