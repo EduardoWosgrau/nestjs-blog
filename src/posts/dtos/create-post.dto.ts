@@ -8,6 +8,7 @@ import {
   IsString,
   IsUrl,
   Matches,
+  MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
@@ -20,6 +21,7 @@ import { Type } from 'class-transformer';
 export class CreatePostDto {
   @IsString()
   @MinLength(4)
+  @MaxLength(512)
   @IsNotEmpty()
   @ApiProperty({
     description: 'This is the title for the blog post',
@@ -47,6 +49,7 @@ export class CreatePostDto {
     message:
       'A slug should be all small letters and uses only "-" and without spaces. For example "my-url"',
   })
+  @MaxLength(256)
   slug: string;
 
   @ApiProperty({
@@ -82,6 +85,7 @@ export class CreatePostDto {
   })
   @IsOptional()
   @IsUrl()
+  @MaxLength(1024)
   featuredImageUrl?: string;
 
   @ApiPropertyOptional({
