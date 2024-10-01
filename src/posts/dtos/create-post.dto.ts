@@ -15,7 +15,7 @@ import {
 import { PostType } from '../enums/post-type.enum';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { PostStatus } from '../enums/post-status.enum';
-import { CreatePostMetaOptionsDto } from './create-post-meta-options.dto';
+import { CreatePostMetaOptionsDto } from '../../meta-options/dtos/create-post-meta-options.dto';
 import { Type } from 'class-transformer';
 
 export class CreatePostDto {
@@ -40,8 +40,8 @@ export class CreatePostDto {
   postType: PostType;
 
   @ApiProperty({
-    enum: PostType,
     description: 'For Example - "my-url"',
+    example: 'my-blog-post',
   })
   @IsString()
   @IsNotEmpty()
