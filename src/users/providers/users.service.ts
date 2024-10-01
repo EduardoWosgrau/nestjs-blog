@@ -7,13 +7,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 
 /**
- * Class to connect to Users tabele and perform business operations
+ * Class to connect to Users table and perform business operations
  */
 @Injectable()
 export class UsersService {
   /**
    * Constructor for users service
    * @param authService auth service circular injection
+   * @param usersRepository authentication service
    */
   constructor(
     // Injecting Auth Service
@@ -58,6 +59,9 @@ export class UsersService {
     };
   }
 
+  /**
+   * Creates a new user in the database
+   */
   public async createUser(createUserDto: CreateUserDto) {
     const existingUser = await this.usersRepository.find({
       where: { email: createUserDto.email },
