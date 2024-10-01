@@ -1,7 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PostType } from './enums/post-type.enum';
 import { PostStatus } from './enums/post-status.enum';
-import { CreatePostMetaOptionsDto } from '../meta-options/dtos/create-post-meta-options.dto';
+import { MetaOption } from 'src/meta-options/meta-option.entity';
 
 @Entity()
 export class Post {
@@ -64,7 +70,6 @@ export class Post {
   })
   publishOn?: Date;
 
-  // TODO: Complete on relationships
   @Column({
     type: 'varchar',
     length: 96,
@@ -72,10 +77,7 @@ export class Post {
   })
   tags?: string[];
 
-  @Column({
-    type: 'varchar',
-    length: 96,
-    nullable: true,
-  })
-  metaOptions?: CreatePostMetaOptionsDto;
+  @OneToOne(() => MetaOption)
+  @JoinColumn()
+  metaOptions?: MetaOption;
 }
