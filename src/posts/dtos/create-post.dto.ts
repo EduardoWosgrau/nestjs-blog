@@ -59,7 +59,7 @@ export class CreatePostDto {
   })
   @IsEnum(PostStatus)
   @IsNotEmpty()
-  status: string; // enum('draft', 'scheduled', 'review', 'published'),
+  status: PostStatus; // enum('draft', 'scheduled', 'review', 'published'),
 
   @ApiPropertyOptional({
     description: 'This is the content of the post',
@@ -107,30 +107,22 @@ export class CreatePostDto {
   tags?: string[];
 
   @ApiPropertyOptional({
-    type: 'array',
+    type: 'object',
     required: false,
     items: {
       type: 'object',
       properties: {
-        key: {
-          type: 'string',
-          description:
-            'The key can be any string identifier for your meta option',
-          example: 'sidebarEnabled',
-        },
-        value: {
-          type: 'any',
-          description: 'Any value that you want to save to the key',
-          example: true,
+        metaValue: {
+          type: 'json',
+          description: 'The metaValue is a JSON string',
+          example: '{"sidebarEnabled": true, "footerActive": true}',
         },
       },
     },
-    title: '',
-    example: [],
+    example: '"metaValue": {"sidebarEnabled": true, "footerActive"}',
   })
   @IsOptional()
-  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreatePostMetaOptionsDto)
-  metaOptions?: CreatePostMetaOptionsDto[];
+  metaOptions?: CreatePostMetaOptionsDto | null;
 }
