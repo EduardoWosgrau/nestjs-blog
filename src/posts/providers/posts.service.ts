@@ -21,20 +21,16 @@ export class PostsService {
     private metaOptionsRepository: Repository<MetaOption>,
   ) {}
 
-  public findAll(userId: string) {
+  public async findAll(userId: string) {
     const user = this.usersService.findOneById(userId);
-    return [
-      {
-        user: user,
-        title: 'test title',
-        content: 'test content',
+    console.log(user);
+    const posts = await this.postsRepository.find({
+      // redundant to eager on OneToOne relationship with post entity
+      relations: {
+        metaOptions: true,
       },
-      {
-        user: user,
-        title: 'test title 2',
-        content: 'test content 2',
-      },
-    ];
+    });
+    return posts;
   }
 
   public async create(@Body() createPostDto: CreatePostDto) {
