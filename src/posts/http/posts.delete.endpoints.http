@@ -1,3 +1,3 @@
 ## Post Request For Posts Controller
 DELETE http://localhost:3030/posts/
-?id=4
+?id=12
