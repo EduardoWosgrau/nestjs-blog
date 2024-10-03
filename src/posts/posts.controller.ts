@@ -21,7 +21,7 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get('/:userId?')
-  public getPosts(@Param('userId') userId: string) {
+  public getPosts(@Param('userId', ParseIntPipe) userId: number) {
     return this.postsService.findAll(userId);
   }
 
