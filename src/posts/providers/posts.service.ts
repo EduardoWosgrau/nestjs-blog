@@ -37,4 +37,14 @@ export class PostsService {
     const post = this.postsRepository.create(createPostDto);
     return await this.postsRepository.save(post);
   }
+
+  public async delete(id: number) {
+    const post = await this.postsRepository.findOneBy({
+      id,
+    });
+    await this.postsRepository.delete(id);
+
+    await this.metaOptionsRepository.delete(post.metaOptions.id);
+    return { deleted: true, id };
+  }
 }
