@@ -45,6 +45,7 @@ export class CreateTagDto {
   schema?: string;
 
   @ApiPropertyOptional()
+  @IsOptional()
   @IsString()
   @IsUrl()
   @MaxLength(1024)
