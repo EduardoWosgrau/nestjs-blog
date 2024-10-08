@@ -2,23 +2,18 @@
 PATCH http://localhost:3030/posts/
 Content-Type: application/json
 {
-    "id": 1013,
-    "title": "What's new with Nest.js",
+    "id": 15,
+    "title": "What's new with Vue.js",
     "postType": "post",
-    "slug": "new-with-nestjs",
+    "slug": "new-with-nestjs-16",
     "status": "draft",
     "content": "test content",
     "schema": "{\r\n    \"@context\": \"https:\/\/schema.org\",\r\n    \"@type\": \"Person\"\r\n  }",
     "featuredImageUrl": "http://localhost.com/images/image1.jpg",
     "publishOn": "2024-03-16T07:46:32+0000",
-    "tags": [
-        "nestJS",
-        "typescript"
-    ],
-    "metaOptions": [
-        {
-            "key": "testKey",
-            "value": 20
-        }
-    ]
+    "tags": [1, 2],
+    "metaOptions": {
+        "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
+    },
+    "authorId": 1
 }

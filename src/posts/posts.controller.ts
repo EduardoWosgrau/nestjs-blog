@@ -48,8 +48,7 @@ export class PostsController {
   @ApiBody({ type: PatchPostDto })
   @Patch()
   public updatePost(@Body() patchPostDto: PatchPostDto) {
-    console.log(patchPostDto);
-    return;
+    return this.postsService.update(patchPostDto);
   }
   @ApiOperation({
     summary: 'Deletes a blog post by id',
