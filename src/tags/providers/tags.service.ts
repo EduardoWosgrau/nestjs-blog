@@ -23,7 +23,7 @@ export class TagsService {
    * Creates a new tag in the database
    * @param createTagDto Tag data tranfer object
    */
-  public async createTag(createTagDto: CreateTagDto) {
+  public async create(createTagDto: CreateTagDto) {
     const tag = this.tagsRepository.create(createTagDto);
     return await this.tagsRepository.save(tag);
   }

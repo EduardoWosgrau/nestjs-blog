@@ -19,7 +19,7 @@ export class TagsController {
     type: CreateTagDto,
   })
   @Post()
-  public createTag(@Body() createTagDto: CreateTagDto) {
-    return this.tagsService.createTag(createTagDto);
+  public create(@Body() createTagDto: CreateTagDto) {
+    return this.tagsService.create(createTagDto);
   }
 }

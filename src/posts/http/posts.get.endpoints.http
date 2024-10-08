@@ -1,2 +1,2 @@
 ## Get Request For Posts Controller
-GET http://localhost:3030/posts/
+GET http://localhost:3030/posts/1

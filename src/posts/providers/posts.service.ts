@@ -19,7 +19,12 @@ export class PostsService {
   public async findAll(userId: number) {
     const user = this.usersService.findOneById(userId);
     console.log(user);
-    const posts = await this.postsRepository.find();
+    const posts = await this.postsRepository.find({
+      relations: {
+        metaOptions: true,
+        author: true,
+      },
+    });
     return posts;
   }
 

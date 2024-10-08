@@ -1,0 +1,9 @@
+## Get Request For Tags Controller
+POST http://localhost:3030/tags
+Content-Type: application/json
+
+{
+    "name": "javsacript",
+    "slug": "javsacript",
+    "description": "All Javascript posts",
+}

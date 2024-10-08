@@ -11,7 +11,10 @@ import {
 } from 'class-validator';
 
 export class CreateTagDto {
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Name of the tag',
+    example: 'docker',
+  })
   @IsString()
   @MinLength(3)
   @MaxLength(256)
