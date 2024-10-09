@@ -40,4 +40,16 @@ export class TagsService {
     });
     return results;
   }
+
+  /**
+   * Delete tag by id
+   * @param id Id of the tag to be deleted
+   */
+  public async delete(id: number) {
+    await this.tagsRepository.delete(id);
+    return {
+      deleted: true,
+      id,
+    };
+  }
 }

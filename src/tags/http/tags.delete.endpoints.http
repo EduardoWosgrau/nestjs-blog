@@ -1,0 +1,3 @@
+## Get Request For Tags Controller
+DELETE http://localhost:3030/tags/
+?id=2

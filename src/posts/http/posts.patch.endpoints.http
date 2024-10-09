@@ -2,7 +2,7 @@
 PATCH http://localhost:3030/posts/
 Content-Type: application/json
 {
-    "id": 15,
+    "id": 17,
     "title": "What's new with Vue.js",
     "postType": "post",
     "slug": "new-with-nestjs-16",
