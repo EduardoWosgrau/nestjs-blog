@@ -1,3 +1,7 @@
-## Get Request For Tags Controller
+## Delete Request For Tags Controller
 DELETE http://localhost:3030/tags/
 ?id=2
+
+## Soft delete Request For Tags Controller
+DELETE http://localhost:3030/tags/soft-delete
+?id=3

@@ -38,4 +38,12 @@ export class TagsController {
   public delete(@Query('id', ParseIntPipe) id: number) {
     return this.tagsService.delete(id);
   }
+
+  @ApiOperation({
+    summary: 'Soft deletes a tag by id',
+  })
+  @Delete('soft-delete')
+  public softDelete(@Query('id', ParseIntPipe) id: number) {
+    return this.tagsService.softDelete(id);
+  }
 }

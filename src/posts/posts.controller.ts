@@ -20,11 +20,24 @@ import { PatchPostDto } from './dtos/patch-post.dto';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  /**
+   * Get all post of user
+   * @param userId Id of the user
+   * @returns Posts of the user
+   */
+  @ApiOperation({
+    summary: 'Fetches a list of user blog posts',
+  })
   @Get('/:userId?')
   public getPosts(@Param('userId', ParseIntPipe) userId: number) {
     return this.postsService.findAll(userId);
   }
 
+  /**
+   * Creates a new blog post
+   * @param CreatePostDto post object
+   * @returns post created
+   */
   @ApiOperation({
     summary: 'Creates a new blog post',
   })
@@ -38,6 +51,11 @@ export class PostsController {
     return this.postsService.create(CreatePostDto);
   }
 
+  /**
+   * Updates an existing blog post
+   * @param patchPostDto post object
+   * @returns post updated
+   */
   @ApiOperation({
     summary: 'Updates an existing blog post',
   })
@@ -50,6 +68,12 @@ export class PostsController {
   public updatePost(@Body() patchPostDto: PatchPostDto) {
     return this.postsService.update(patchPostDto);
   }
+
+  /**
+   * Deletes a blog post by id
+   * @param id Id of the blog post
+   * @returns return status delete object
+   */
   @ApiOperation({
     summary: 'Deletes a blog post by id',
   })
