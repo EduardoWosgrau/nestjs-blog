@@ -2,6 +2,7 @@ import {
   BadRequestException,
   HttpException,
   HttpStatus,
+  Inject,
   Injectable,
   RequestTimeoutException,
 } from '@nestjs/common';
@@ -10,6 +11,7 @@ import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 import { UserCreateManyProvider } from './user-create-many.provider';
 
 /**
@@ -25,7 +27,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
 
-    @InjectRepository(User)
+    @Inject()
     private readonly userCreateManyProvider: UserCreateManyProvider,
   ) {}
 
@@ -111,7 +113,7 @@ export class UsersService {
     return newUser;
   }
 
-  public async createMany(createUsersDto: CreateUserDto[]) {
-    return this.userCreateManyProvider.createMany(createUsersDto);
+  public async createMany(createManyUsersDto: CreateManyUsersDto) {
+    return this.userCreateManyProvider.createMany(createManyUsersDto);
   }
 }
