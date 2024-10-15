@@ -6,7 +6,7 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
@@ -25,6 +25,9 @@ export class UsersService {
     // Injecting Users Repository
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+
+    // Injecting Datasource
+    private readonly dataSource: DataSource,
   ) {}
 
   /**
@@ -107,5 +110,25 @@ export class UsersService {
     }
 
     return newUser;
+  }
+
+  public async createMany(createUsersDto: CreateUserDto[]) {
+    const newUsers: User[] = [];
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      for (const user of createUsersDto) {
+        const newUser = queryRunner.manager.create(User, user);
+        const result = await queryRunner.manager.save(newUser);
+        newUsers.push(result);
+      }
+      await queryRunner.commitTransaction();
+    } catch {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+      console.log(createUsersDto);
+    }
   }
 }
