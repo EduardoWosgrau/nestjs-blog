@@ -33,12 +33,12 @@ export class TagsService {
    * @param tagsIds Array of IDs of tags
    */
   public async findMultipleTags(tagsIds: number[]) {
-    const results = this.tagsRepository.find({
+    const tags = await this.tagsRepository.find({
       where: {
         id: In(tagsIds),
       },
     });
-    return results;
+    return tags;
   }
 
   /**

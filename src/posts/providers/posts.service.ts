@@ -1,4 +1,9 @@
-import { Body, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
 import { Repository } from 'typeorm';
@@ -52,12 +57,41 @@ export class PostsService {
 
   public async update(patchPostDto: PatchPostDto) {
     // Find the Tags
-    const tags = await this.tagsService.findMultipleTags(patchPostDto.tags);
+    let tags = [];
+    const countTags = patchPostDto.tags?.length ?? 0;
+    if (countTags) {
+      try {
+        tags = await this.tagsService.findMultipleTags(patchPostDto.tags);
+      } catch {
+        throw new RequestTimeoutException(
+          'Unable to process your request at the moment, please try later',
+          {
+            description: 'Error connecting to the database',
+          },
+        );
+      }
+    }
+    if (tags.length != countTags) {
+      throw new BadRequestException('Some of the tags does not exist.');
+    }
 
     // Find the Post
-    const post = await this.postsRepository.findOneBy({
-      id: patchPostDto.id,
-    });
+    let post = undefined;
+    try {
+      post = await this.postsRepository.findOneBy({
+        id: patchPostDto.id,
+      });
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+    if (!post) {
+      throw new BadRequestException('Post id does not exist.');
+    }
 
     // Update the properties
     post.title = patchPostDto.title ?? post.title;
@@ -74,6 +108,16 @@ export class PostsService {
     post.tags = tags;
 
     // Save the post and return
-    return await this.postsRepository.save(post);
+    try {
+      post = await this.postsRepository.save(post);
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+    return post;
   }
 }
