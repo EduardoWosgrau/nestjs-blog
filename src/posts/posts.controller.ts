@@ -47,8 +47,8 @@ export class PostsController {
   })
   @ApiBody({ type: CreatePostDto })
   @Post()
-  public createPost(@Body() CreatePostDto: CreatePostDto) {
-    return this.postsService.create(CreatePostDto);
+  public createPost(@Body() createPostDto: CreatePostDto) {
+    return this.postsService.create(createPostDto);
   }
 
   /**

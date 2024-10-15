@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  Body,
   Injectable,
   RequestTimeoutException,
 } from '@nestjs/common';
@@ -39,7 +38,7 @@ export class PostsService {
     return posts;
   }
 
-  public async create(@Body() createPostDto: CreatePostDto) {
+  public async create(createPostDto: CreatePostDto) {
     const author = await this.usersService.findOneById(createPostDto?.authorId);
     const tags = await this.tagsService.findMultipleTags(createPostDto.tags);
     const post = this.postsRepository.create({
