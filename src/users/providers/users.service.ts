@@ -1,18 +1,15 @@
 import {
   BadRequestException,
-  forwardRef,
-  Inject,
+  HttpException,
+  HttpStatus,
   Injectable,
   RequestTimeoutException,
 } from '@nestjs/common';
 import { GetUsersParamDto } from '../dtos/get-users-param.dto';
-import { AuthService } from 'src/auth/providers/auth.service';
 import { Repository } from 'typeorm';
 import { User } from '../user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { ConfigType } from '@nestjs/config';
-import profileConfig from '../config/profile.config';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -25,17 +22,9 @@ export class UsersService {
    * @param usersRepository authentication service
    */
   constructor(
-    // Injecting Auth Service
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
-
     // Injecting Users Repository
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-
-    // Injecting profile configurations
-    @Inject(profileConfig.KEY)
-    private readonly profileConfiguration: ConfigType<typeof profileConfig>,
   ) {}
 
   /**
@@ -46,26 +35,41 @@ export class UsersService {
     limit: number,
     page: number,
   ) {
-    console.log(this.profileConfiguration.apiKey);
-    const isAuth = this.authService.isAuth();
-    console.log(getUsersParamDto, limit, page, isAuth);
-    return [
+    console.log(getUsersParamDto, limit, page);
+    throw new HttpException(
       {
-        firstName: 'John',
-        email: 'john@doe.com',
+        status: HttpStatus.MOVED_PERMANENTLY,
+        error: 'The API endpoint does not exist',
+        fileName: 'users.service.ts',
+        lineNumber: 88,
       },
+      HttpStatus.MOVED_PERMANENTLY,
       {
-        firstName: 'Alice',
-        email: 'alice@doe.com',
+        cause: new Error(),
+        description: 'Occured because the API endpoint was permanently moved',
       },
-    ];
+    );
   }
 
   /**
    * Finds a single user by ID of the user
    */
   public async findOneById(id: number) {
-    return this.usersRepository.findOneBy({ id });
+    let user = undefined;
+    try {
+      user = await this.usersRepository.findOneBy({ id });
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+    if (!user) {
+      throw new BadRequestException('The user id does not exist.');
+    }
+    return user;
   }
 
   /**
@@ -77,10 +81,9 @@ export class UsersService {
       existingUser = await this.usersRepository.findOne({
         where: { email: createUserDto.email },
       });
-    } catch (error) {
-      console.log(error);
+    } catch {
       throw new RequestTimeoutException(
-        'Unable to processo your request at the moment plase try later',
+        'Unable to process your request at the moment, please try later',
         {
           description: 'Error connecting to the database',
         },
@@ -91,7 +94,18 @@ export class UsersService {
         'User already exists, please check your email.',
       );
     }
-    const newUser = this.usersRepository.create(createUserDto);
-    return await this.usersRepository.save(newUser);
+    let newUser = this.usersRepository.create(createUserDto);
+    try {
+      newUser = await this.usersRepository.save(newUser);
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+
+    return newUser;
   }
 }
