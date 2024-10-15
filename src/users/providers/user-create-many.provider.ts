@@ -1,5 +1,9 @@
 import { DataSource } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { User } from '../user.entity';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 
@@ -13,8 +17,17 @@ export class UserCreateManyProvider {
   public async createMany(createManyUsersDto: CreateManyUsersDto) {
     const newUsers: User[] = [];
     const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+    try {
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+    } catch {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
     try {
       for (const user of createManyUsersDto.users) {
         const newUser = queryRunner.manager.create(User, user);
@@ -22,8 +35,11 @@ export class UserCreateManyProvider {
         newUsers.push(result);
       }
       await queryRunner.commitTransaction();
-    } catch {
+    } catch (error) {
       await queryRunner.rollbackTransaction();
+      throw new ConflictException('Could not complete the transaction', {
+        description: String(error),
+      });
     } finally {
       await queryRunner.release();
     }
