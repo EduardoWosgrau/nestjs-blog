@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { Pagination } from './providers/pagination.provider';
+import { PaginationProvider } from './providers/pagination.provider';
 
 @Module({
-  providers: [Pagination],
+  providers: [PaginationProvider],
+  exports: [PaginationProvider],
 })
 export class PaginationModule {}
