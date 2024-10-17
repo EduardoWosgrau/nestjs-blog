@@ -25,9 +25,9 @@ export class PostsService {
     private postsRepository: Repository<Post>,
   ) {}
 
-  public async findAll(userId: number) {
-    const user = this.usersService.findOneById(userId);
-    console.log(user);
+  public async findAll(userId: string) {
+    //const user = this.usersService.findOneById(userId);
+    console.log(userId);
     const posts = await this.postsRepository.find({
       relations: {
         metaOptions: true,

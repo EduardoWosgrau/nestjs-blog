@@ -131,7 +131,7 @@ export class CreatePostDto {
     required: true,
     example: 1,
   })
-  @IsInt()
   @IsNotEmpty()
+  @IsInt()
   authorId: number;
 }

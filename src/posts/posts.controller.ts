@@ -14,6 +14,7 @@ import { PostsService } from './providers/posts.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-post.dto';
+import { GetPostsDto } from './dtos/get-posts.dto';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -29,7 +30,11 @@ export class PostsController {
     summary: 'Fetches a list of user blog posts',
   })
   @Get('/:userId?')
-  public getPosts(@Param('userId', ParseIntPipe) userId: number) {
+  public getPosts(
+    @Param('userId') userId: string,
+    @Query() postQuery: GetPostsDto,
+  ) {
+    console.log(postQuery);
     return this.postsService.findAll(userId);
   }
 
