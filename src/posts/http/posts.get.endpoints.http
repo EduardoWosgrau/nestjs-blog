@@ -10,4 +10,4 @@ GET http://localhost:3030/posts/14
 ?startDate={{startDate}}
 &endDate={{endDate}}
 &limit=2
-&page=1
+&page=2
