@@ -3,9 +3,9 @@ POST http://localhost:3030/users
 Content-Type: application/json
 
 {
-    "firstName": "John",
+    "firstName": "Eduardo",
     "lastName": "Doe",
-    "email": "john@doe22.com",
+    "email": "edu@doe22.com",
     "password": "password@123"
 }
 
@@ -17,7 +17,7 @@ Content-Type: application/json
         {
             "firstName": "Mark",
             "lastName": "Does",
-            "email": "john@doebosg.com",
+            "email": "markk@doebosg.com",
             "password": "password@123"
         },
         {
