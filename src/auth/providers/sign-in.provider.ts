@@ -31,13 +31,14 @@ export class SignInProvider {
         signInDto.password,
         user.password,
       );
-      if (!isEqual) throw new UnauthorizedException('Incorrect password');
-      return true;
     } catch (error) {
       throw new RequestTimeoutException(error, {
         description: 'Could not compare passwords',
       });
     }
+
+    if (!isEqual) throw new UnauthorizedException('Incorrect password');
+    return true;
   }
 
   public isAuth() {
