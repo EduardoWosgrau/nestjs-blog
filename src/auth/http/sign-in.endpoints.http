@@ -1,0 +1,8 @@
+## Send sign-in request
+POST http://localhost:3030/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "edu@doe22.com",
+  "password": "password@123"
+}
